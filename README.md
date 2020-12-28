@@ -34,10 +34,10 @@
 
 ---
 
-## Стек технологій
-### Backend
+## Стек технологій:
 
-### Django 
+### Backend: Django 
+ 
 Даний фреймворк написаний на Python. Його дуже зручно використовувати для розробки веб-сайтів, котрі працюють із базами даних. 
 
 #### Переваги: 
@@ -69,8 +69,7 @@ If you're not tied to any legacy system and have the freedom to choose a databas
 
 
 
-### Frontend
-### React
+### Frontend: React
 
 Вибір стояв поміж React та Angular. Обидва є є найбільш популярними технологіями у сфері front-end розробки.
 Порівняння:
