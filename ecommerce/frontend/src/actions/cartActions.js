@@ -6,8 +6,6 @@ import {
   CART_SAVE_PAYMENT_METHOD,
   CART_FETCH,
 } from "../constants/cartConstants";
-import { getState } from "react-redux";
-import { history } from "../App";
 
 
 const getConfig = (getState) => {
@@ -38,7 +36,7 @@ export const fetchCart = () => async (dispatch, getState) => {
 export const addToCart = (id, qty) => async (dispatch, getState) => {
 
   const params = { "quantity": qty, "product": parseInt(id) };
-  console.log(JSON.parse(JSON.stringify(params)));
+  //console.log(JSON.parse(JSON.stringify(params)));
 
   const {
     userLogin: { userInfo },
@@ -82,14 +80,15 @@ export const removeFromCart = (item_id) => async (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
+
 export const saveShippingAddress = (data) => (dispatch) => {
   dispatch({
-    type: CART_SAVE_SHIPPING_ADDRESS,
-    payload: data,
-  });
+      type: CART_SAVE_SHIPPING_ADDRESS,
+      payload: data,
+  })
 
-  localStorage.setItem("shippingAddress", JSON.stringify(data));
-};
+  localStorage.setItem('shippingAddress', JSON.stringify(data))
+}
 
 export const savePaymentMethod = (data) => (dispatch) => {
   dispatch({

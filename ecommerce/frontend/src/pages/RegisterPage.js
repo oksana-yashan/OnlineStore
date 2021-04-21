@@ -6,7 +6,6 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
-import Header from '../components/Header'
 import Footer from '../components/Footer';
 
 const RegisterPage = ({location, history}) => {
@@ -42,7 +41,6 @@ const RegisterPage = ({location, history}) => {
     
     return (
         <div>
-        <Header />
         <h1>{ '  \n' }</h1>
         <FormContainer>
     

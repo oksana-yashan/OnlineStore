@@ -1,50 +1,87 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button, Dropdown } from "react-bootstrap";
 import Product from "../components/Product";
-import axios from "axios";
-import { listProducts } from '../actions/productActions';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import { useDispatch, useSelector } from 'react-redux';
-import Header from "../components/Header";
-import Footer from '../components/Footer';
+import { listProducts } from "../actions/productActions";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import { useDispatch, useSelector } from "react-redux";
+import Footer from "../components/Footer";
+import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
+import Categories from "../components/Categories";
+import { Link } from "react-router-dom";
 
-
-const HomePage = () => {
+const HomePage = ({ history }) => {
   //  const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
-  const { error, loading, products} = productList;
+  const { error, loading, products,categories, page, pages } = productList;
+
+  let search = history.location.search;
+  const [filter, setFilter] = useState("");
+  const [sorting, setSorting] = useState("");
 
   useEffect(() => {
-    // async function fetchProducts() {
-    //   const { data } = await axios.get("/products");
-    //   //console.log(data.results)
-    //   setProducts(data.results);
-    // }
-    // fetchProducts();
+    dispatch(listProducts(search, filter, sorting));
+  }, [dispatch, search, filter, sorting]);
 
-    dispatch(listProducts())
-
-  }, [dispatch]);
 
   return (
     <div>
-      <Header />
-      <h1>{ ' '}</h1>
-      <h1>Products</h1>
+      {!search && <ProductCarousel />}
+
+      {/* <h1 >Products</h1> */}
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {products.map((p) => (
-            <Col key={p.id} sm={9} md={6} lg={4} xl={3}>
-              <Product product={p} />
-            </Col>
-          ))}
-        </Row>
+        <div>
+          <div class="row" style={{"justifyContent":"left"}}>
+          <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Sort by
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => setSorting(`ordering=price`)}>Price <i class="fa fa-arrow-up"></i></Dropdown.Item>
+                  <Dropdown.Item onClick={() => setSorting(`ordering=-price`)}>Price <i class="fa fa-arrow-down"></i></Dropdown.Item>
+                  <Dropdown.Item onClick={() => setSorting(`ordering=raiting`)}>Raiting <i class="fa fa-arrow-up"></i></Dropdown.Item>
+                  <Dropdown.Item onClick={() => setSorting(`ordering=-raiting`)}>Raiting <i class="fa fa-arrow-down" ></i></Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+          </div>
+
+          <div class="row">
+            <div class="my-sidebar">
+              {/* <Categories categories={categories}/> */}
+              <menu>
+                  <div id={0}>
+                   <Link to={"/"} onClick={() => setFilter("")}>{"All Categories"}</Link>
+                  </div>
+                {categories.map((category) => (
+                  <div id={category.id}>
+                   <Link to={"/"} onClick={() => setFilter(`categories=${category.id}`)}>{category.name}</Link>
+                  </div>
+                ))}
+
+              </menu>
+            </div>
+            
+            <div class="col text-center">
+              <Row>
+              
+                {products.map((p) => (
+                  <Col key={p.id} sm={9} md={6} lg={4} xl={3}>
+                    <Product product={p} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </div>
+          
+          <Paginate page={page} pages={pages} search={search} />
+        </div>
       )}
       <Footer />
     </div>

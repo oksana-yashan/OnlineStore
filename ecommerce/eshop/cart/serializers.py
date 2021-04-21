@@ -4,14 +4,8 @@ from products.models import Product
 from products.serializers import ProductLessSerializer
 
 
-# class CartItemProductNestedSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Product
-#         fields = ['id', 'image', 'price', 'quantity']
 
 class CartItemSerializer(serializers.ModelSerializer):
-    # product_info = CartItemProductNestedSerializer(many=False, read_only=True)
-    # product_info = Product.objects.filter()
     product_info = serializers.ReadOnlyField(source='product.name', read_only=True)
     product = ProductLessSerializer()
     class Meta:
@@ -24,6 +18,7 @@ class CartSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'creation_date', 'total_price', 'cart_items']
 
     cart_items = CartItemSerializer(many=True, read_only=True)
+
 
 class AddItemToCartSerializer(serializers.ModelSerializer):
     cart_items_count = serializers.SerializerMethodField()
@@ -38,9 +33,8 @@ class AddItemToCartSerializer(serializers.ModelSerializer):
             return quantity
 
     def create(self, validated_data):
-        print(validated_data)
         user = self.context.get('request').user
-        print( self.context.get('request'))
+        #print( self.context.get('request'))
         product = validated_data.get('product')
         quantity = validated_data.get('quantity')
 
@@ -56,7 +50,7 @@ class AddItemToCartSerializer(serializers.ModelSerializer):
         cart_item = CartItem.objects.create(
             cart=cart, product=product, quantity=quantity)
         cart.items.add(cart_item)
-        print(cart_item)
+        #print(cart_item)
         return cart_item
 
     def get_cart_items_count(self, obj):

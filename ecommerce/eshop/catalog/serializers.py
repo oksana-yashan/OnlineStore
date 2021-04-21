@@ -6,7 +6,7 @@ from catalog.models import Catalog
 class CatalogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Catalog
-        fields = ['name']
+        fields = ['id','name']
 
 
 class CatalogDetailedSerializer(serializers.ModelSerializer):
@@ -26,4 +26,4 @@ class CatalogTreeSerializer(serializers.ModelSerializer):
 
     class Meta():
         model = Catalog
-        fields = ['name', 'description', 'index', 'children']
+        fields = ['name', 'description', 'id', 'children']

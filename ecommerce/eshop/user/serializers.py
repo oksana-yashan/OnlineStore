@@ -1,6 +1,5 @@
 
 from rest_framework import serializers
-from .models import UserProfile
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -9,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     is_admin = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = User
-        fields = ['id', 'username','email', 'name', 'is_admin']
+        fields = ['id', 'username', 'email', 'name', 'is_admin']
 
     def get_name(self, obj):
         name = obj.first_name
@@ -30,9 +29,3 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['id', 'first_name', 'last_name',
-                  'phone', 'email', 'gender']

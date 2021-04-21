@@ -33,7 +33,7 @@ function LoginPage({ location, history }) {
 
     return (
         <div>
-        <Header />
+        {/* <Header /> */}
         <h1>{ '  \n' }</h1>
         <FormContainer>
     

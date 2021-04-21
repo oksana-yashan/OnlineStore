@@ -13,8 +13,7 @@ from django.shortcuts import render
 class CatalogList(generics.ListCreateAPIView):
     queryset = Catalog.objects.all()
     serializer_class = CatalogSerializer
-    pagination_class = LimitOffsetPagination
-    permission_classes = [IsAuthenticated]
+    pagination_class = None
 
 
 class CatalogDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -26,9 +25,8 @@ class CatalogDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class CatalogTree(generics.ListAPIView):
     serializer_class = CatalogTreeSerializer
-    pagination_class = LimitOffsetPagination
-    permission_classes = [IsAuthenticated]
-
+    pagination_class = None
+    
     def get_queryset(self):
         return Catalog.objects.exclude(parent__isnull=False)
 

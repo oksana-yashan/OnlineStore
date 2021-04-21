@@ -32,7 +32,7 @@ function CartPage({ match, location, history }) {
 
     return (
         <div>
-        <Header/>        
+        {/* <Header/>         */}
         <Row>
             <Col md={8}>
                 <h1>Shopping Cart</h1>

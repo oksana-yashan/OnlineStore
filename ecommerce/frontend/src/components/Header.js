@@ -2,18 +2,21 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Nav, Container, Row, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-// import SearchBox from './SearchBox'
+import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
+import {history} from '../App'
+
 
 function Header() {
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
-
+    // console.log(props)
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
         dispatch(logout())
+        history.push('')
     }
 
     return (
@@ -22,12 +25,14 @@ function Header() {
             <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect  >
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand >ProShop</Navbar.Brand>
+                        <Navbar.Brand >EShop</Navbar.Brand>
                     </LinkContainer>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        {/* <SearchBox /> */}
+                        
+                        <SearchBox />
+                        
                         <Nav className="ml-auto">
 
                             {userInfo ? 
@@ -53,7 +58,7 @@ function Header() {
                                 )}
 
 
-                            {userInfo && userInfo.isAdmin && (
+                            {userInfo && userInfo.is_admin && (
                                 <NavDropdown title='Admin' id='adminmenue'>
                                     <LinkContainer to='/admin/userlist'>
                                         <NavDropdown.Item>Users</NavDropdown.Item>
@@ -69,6 +74,7 @@ function Header() {
 
                                 </NavDropdown>
                             )}
+
 
 
                         </Nav>

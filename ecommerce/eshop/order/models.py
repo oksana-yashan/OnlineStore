@@ -1,31 +1,47 @@
 from django.db import models
 from datetime import datetime
-
-from user.models import UserProfile
+from django.contrib.auth.models import User
 from products.models import Product
 
 
-class Order(models.Model):
-    ORDERS_STATUS = [
-        ('Processed', 'Processed'),
-        ('On_road', 'On road'),
-        ('Delivery', 'Delivery'),
-        ('Received', 'Received')
-    ]
-    SHIPMENT = [
-        ('Courier_delivery', 'Courier delivery'),
-        ('Mail_delivery', 'Mail delivery'),
-        ('Pickup', 'Pickup')
-    ]
 
-    customer = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    order_timedate = models.DateTimeField(default=datetime.now)
-    content = models.ManyToManyField(Product)
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    paymentMethod = models.CharField(max_length=200, null=True, blank=True)
+    createdAt = models.DateTimeField(default=datetime.now)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    shipment_type = models.CharField(max_length=20, choices=SHIPMENT)
-    status = models.CharField(max_length=20, choices=ORDERS_STATUS)
-    is_active = models.BooleanField(default=True, verbose_name='Active?')
+    is_paid = models.BooleanField(default=False)
+    paidAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    isDelivered = models.BooleanField(default=False)
+    deliveredAt = models.DateTimeField(
+        auto_now_add=False, null=True, blank=True)
 
     def __str__(self):
-        return f' {self.customer}, {self.order_timedate}, {self.content}, {self.price}, {self.shipment_type},' \
-               f' {self.status}, {self.is_active} '
+        return str(self.createdAt)
+
+
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    quantity = models.IntegerField(null=True, blank=True, default=0)
+    price = models.DecimalField(
+        max_digits=7, decimal_places=2)
+    image = models.CharField(max_length=255, null=True, blank=True)
+    
+    def __str__(self):
+        return str(self.product.name)
+
+
+
+class ShippingAddress(models.Model):
+    order = models.OneToOneField(
+        Order, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    postalCode = models.CharField(max_length=200, null=True, blank=True)
+    country = models.CharField(max_length=200, null=True, blank=True)
+   
+    def __str__(self):
+        return str(self.address)

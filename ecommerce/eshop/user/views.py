@@ -5,8 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .serializers import UserProfileSerializer, UserSerializer, UserSerializerWithToken
-from .models import UserProfile
+from .serializers import UserSerializer, UserSerializerWithToken
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
@@ -44,8 +43,8 @@ class UserList(generics.ListCreateAPIView):
     def get_search_fields(self, view, request):
         return request.GET.getlist("search_fields", [])
 
-class RegisterUser(APIView):
 
+class RegisterUser(APIView):
     def post(self, request):
         data = request.data
         try:
@@ -62,39 +61,36 @@ class RegisterUser(APIView):
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
 
-
-# @api_view(['POST'])
-# def registerUser(request):
-#     data = request.data
-#     user = User.objects.create(
-#             first_name=data["name"],
-#             username=data['email'],
-#             email = data['email'],
-#             password=make_password(data['password'])
-#         )
-#     serializer =  UserSerializerWithToken(user, many=False)
-#     return Response(serializer.data)
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteUser(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.delete()
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
 
 
-# @api_view(['GET'])
-# def getCurrentUserProfile(request):
-#     user = request.user
-#     serializer = UserSerializer(user, many=False)
-#     return Response(serializer.data)
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUserById(request, user_id):
+    user = User.objects.get(id=user_id)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateUser(request, user_id):
+    user = User.objects.get(id=user_id)
+
+    data = request.data
+    user.first_name = data['name']
+    user.username = data['email']
+    user.email = data['email']
+    user.is_staff = data['is_admin']
+
+    user.save()
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
 
 
-class UserProfileList(generics.ListCreateAPIView):
-    queryset = UserProfile.objects.all()
-    search_fields = ['first_name', 'last_name']
-    filter_backends = (filters.SearchFilter,)
-    serializer_class = UserProfileSerializer
-    permission_classes = [IsAdminUser,]
-    def get_search_fields(self, view, request):
-        return request.GET.getlist("search_fields", [])
-
-
-class UserProfileDetails(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = UserProfileSerializer
-
-    def get_object(self):
-        return get_object_or_404(UserProfile, pk=self.kwargs.get("user_id"))
