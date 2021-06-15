@@ -16,11 +16,11 @@ import { withRouter } from 'react-router';
 
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
-import UserListPage from './pages/UserListPage';
-import UserEditPage from './pages/UserEditPage';
-import ProductListPage from "./pages/ProductListPage";
-import ProductEditPage from './pages/ProductEditPage';
-import OrderListPage from "./pages/OrderListPage";
+import UserListPage from './pages/admin/UserListPage';
+import UserEditPage from './pages/admin/UserEditPage';
+import ProductListPage from "./pages/admin/ProductListPage";
+import ProductEditPage from './pages/admin/ProductEditPage';
+import OrderListPage from "./pages/admin/OrderListPage";
 
 
 export const history = createBrowserHistory()

@@ -36,23 +36,23 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser,])
-def createProduct( request):
+@permission_classes([IsAdminUser, ])
+def createProduct(request):
     user = request.user
     categs = Catalog.objects.filter(id=2)
 
     product = Product.objects.create(
         # user = user,
-        name = 'Sample Name',
-        price = 0.01,
-        quantity = 1,
-        descriptions = 'Sample Description',
-        sku="00000",
+        name='Sample Name',
+        price=0.01,
+        quantity=1,
+        descriptions='Sample Description',
+        sku="000000",
     )
     product.categories.set(categs)
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
-    
+
 
 @api_view(["POST"])
 def uploadImage(request):
@@ -63,7 +63,6 @@ def uploadImage(request):
     product.image = request.FILES.get('image')
     product.save()
     return Response('Image was uploaded')
-
 
 
 @api_view(['POST'])
@@ -78,7 +77,7 @@ def createProductReview(request, product_id):
     if alreadyExists:
         content = {'detail': 'Product already reviewed'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        
+
     # 2 - No Rating or 0
     elif data['rating'] == 0:
         content = {'detail': 'Please select a rating'}

@@ -3,11 +3,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import FormContainer from "../components/FormContainer";
-import { listProductDetails, updateProduct } from "../actions/productActions";
-import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import FormContainer from "../../components/FormContainer";
+import { listProductDetails, updateProduct } from "../../actions/productActions";
+import { PRODUCT_UPDATE_RESET } from "../../constants/productConstants";
 
 
 function ProductEditPage({ match, history }) {
@@ -37,7 +37,7 @@ function ProductEditPage({ match, history }) {
       history.push("/admin/productlist");
     }
     else {
-      if (!product.name || product.id !== Number(productId)) {
+      if (!product || product.id !== Number(productId)) {
         dispatch(listProductDetails(productId));
       } else {
         setName(product.name);

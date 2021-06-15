@@ -233,7 +233,7 @@ export const listUsers = () => async (dispatch, getState) => {
 
       dispatch({
           type: USER_LIST_SUCCESS,
-          payload: data.results
+          payload: data
       })
 
 

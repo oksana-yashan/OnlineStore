@@ -38,7 +38,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Product
         fields = ['id', 'name', 'categories', 'reviews','sku', 'descriptions',
-                  'raiting', 'quantity', 'price', 'image','images', 'available']
+                  'raiting', 'quantity', 'price', 'image','small_image','images', 'available']
 
     def get_reviews(self, obj):
         reviews = obj.review_set.all()
@@ -54,7 +54,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductLessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id','name', 'image', 'quantity', 'price']
+        fields = ['id','name', 'image', 'small_image', 'quantity', 'price']
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -62,4 +62,4 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
-        fields = ['product', 'image']
+        fields = ['product','image']

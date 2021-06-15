@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
-import { listUsers, deleteUser } from "../actions/userActions";
-import Header from "../components/Header";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import { listUsers, deleteUser } from "../../actions/userActions";
+import Header from "../../components/Header";
 // import { history } from "../App";
 
-function UserListPage({history}) {
+function UserListPage({ history }) {
   const dispatch = useDispatch();
 
   const userList = useSelector((state) => state.userList);
@@ -28,15 +28,14 @@ function UserListPage({history}) {
     }
   }, [dispatch, history, userInfo]);
 
-
   const sleep = (delay) => {
     var start = new Date().getTime();
     while (new Date().getTime() < start + delay);
-  }
+  };
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-       dispatch(deleteUser(id));
+      dispatch(deleteUser(id));
     }
   };
 
@@ -61,8 +60,8 @@ function UserListPage({history}) {
           </thead>
 
           <tbody>
-            {console.log(users)}
-            {sleep(1000)}
+            {/* {console.log(users)} */}
+            {/* {sleep(1000)} */}
             {users.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>

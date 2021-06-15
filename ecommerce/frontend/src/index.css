@@ -56,7 +56,7 @@ margin:0.1rem;
 }
 
 .carousel-caption h4 {
-  color: #fff;
+  color: #131212;
 }
 
 .carousel img {
@@ -79,7 +79,8 @@ margin:0.1rem;
 
 .my-sidebar {
   position: relative;
-  width: 300px;
+  /* width: 300px; */
+  width: 17vw;
   border-radius: 4px;
   padding-top: 24px;
   padding-bottom: 24px;
